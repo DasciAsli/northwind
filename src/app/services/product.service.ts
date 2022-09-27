@@ -1,17 +1,23 @@
 import {HttpClient} from '@angular/common/http' //Bunun vasıtasıyla backende(apiye) istekte bulunabiliyoruz
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProductResponseModel } from 'src/app/models/productResponseModel';
+import { ListResponseModel } from '../models/listResponseModel';
+import { Product } from '../models/product';
 
 @Injectable({ 
   providedIn: 'root'
 })
 export class ProductService {
-  apiUrl="https://localhost:44337/api/products/getall";
+  apiUrl="https://localhost:44337/api/";
 
   constructor(private httpClient:HttpClient) { }
 
-  getProducts():Observable<ProductResponseModel>{ 
-    return this.httpClient.get<ProductResponseModel>(this.apiUrl);//gelen datayı ProductResponseModel modeline map edeceksin
+  getProducts():Observable<ListResponseModel<Product>>{
+    let newPath=this.apiUrl+"products/getall";
+    return this.httpClient.get<ListResponseModel<Product>>(newPath);
+  }
+  getProductsByCategory(categoryId:number):Observable<ListResponseModel<Product>>{ 
+    let newPath=this.apiUrl+"products/getbycategory?categoryid="+ categoryId;
+    return this.httpClient.get<ListResponseModel<Product>>(newPath);
   }
 }
