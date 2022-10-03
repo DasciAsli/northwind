@@ -10,7 +10,8 @@ import { CategoryService } from 'src/app/services/category.service';
 export class CategoryComponent implements OnInit {
   categories:Category[];
   currentCategory:Category; //tsconfig.jsondaki "strictPropertyInitialization": false komutu ile bu şekilde kullanabiliyoruz artık
-
+  nullCategory:Category;
+  IsActiveAllProduct:boolean=true;
   constructor(private categoryService:CategoryService) { }
 
   ngOnInit(): void {
@@ -30,6 +31,7 @@ export class CategoryComponent implements OnInit {
 
   setCurrentCategory(category:Category)
    {
+    this.IsActiveAllProduct=false;
     this.currentCategory=category;
    }
 
@@ -44,8 +46,25 @@ export class CategoryComponent implements OnInit {
     {
       return "list-group-item";
     }
-   }
+   } 
 
-    
+  getAllCategoryClass(){
+    if(this.IsActiveAllProduct==true){
+     return "list-group-item active"
+    }
+    else{
+     return "list-group-item"
+    }
+  }
 
+  IsActiveAllProducts(){
+    this.currentCategory=this.nullCategory;
+    if(this.IsActiveAllProduct==false){
+      this.IsActiveAllProduct=true;
+     }
+     else{
+       this.IsActiveAllProduct=false;
+     }
+  }
+  
 }

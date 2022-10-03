@@ -6,7 +6,8 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "strictPropertyInitialization": false,
+    "strictNullChecks": false,//tip güvenliğiyle alakalı sorunu bu şekilde kaldırdık
+    "strictPropertyInitialization": false, 
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,

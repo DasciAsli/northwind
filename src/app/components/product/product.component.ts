@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
+import { ToastrService } from 'ngx-toastr';
+import { CartService } from 'src/app/services/cart.service';
 
 
 @Component({
@@ -13,8 +15,14 @@ export class ProductComponent implements OnInit {
 
   products:Product[] = [];
   dataLoaded=false;
-//ActivatedRoute(Mevcut-Aktifleştirilmiş Route) bir Angular service'i.
-  constructor(private productService:ProductService,private activatedRoute:ActivatedRoute) { }
+  filterText:"";
+  //ActivatedRoute(Mevcut-Aktifleştirilmiş Route) bir Angular service'i.
+  constructor(
+    private productService:ProductService,
+    private toastrService:ToastrService,
+    private activatedRoute:ActivatedRoute,
+    private cartService:CartService
+    ) { }
 
   ngOnInit(): void { //Component açıldığında ilk çalışan metoddur.
     this.activatedRoute.params.subscribe(params=>{
@@ -37,7 +45,6 @@ export class ProductComponent implements OnInit {
       );
   }
 
-
   getProductsByCategory(categoryId:number){
     this.productService.getProductsByCategory(categoryId).subscribe(response => 
       {
@@ -45,6 +52,11 @@ export class ProductComponent implements OnInit {
         this.dataLoaded=true;
       }
       );
+  }
+
+  addToCart(product:Product){
+    this.toastrService.info("Sepete eklendi",product.productName);
+    this.cartService.addToCart(product);
   }
 
 }

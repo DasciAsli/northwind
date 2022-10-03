@@ -4,6 +4,14 @@
       <span class="visually-hidden ">Loading...</span>    
    </div>
 </div>
+
+<div class="mb-3">
+    <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Enter a product name" >
+</div>
+<div *ngIf="filterText != null && filterText.length>0" class="alert alert-primary" >
+    {{filterText}} searched 
+</div>
+
 <div class="shadow-lg p-3 mb-5 bg-body rounded">  
 <table *ngIf="dataLoaded==true" class="table table-hover mt-2">
     <thead  >
@@ -12,16 +20,20 @@
             <th>Product Name</th>
             <th>Category</th>
             <th>Price</th>
+            <th>Price With Vat</th>
             <th>Stock</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let product of products" >
+        <tr *ngFor="let product of products | filterPipe:filterText" >
             <td>{{product.productId}}</td>
-            <td>{{product.productName}}</td>
+            <td>{{product.productName | uppercase}}</td> <!--Pipe kullanımı-->
             <td>{{product.categoryId}}</td>
-            <td>{{product.unitPrice}}</td>
+            <td>{{product.unitPrice | currency}}</td>
+            <td>{{product.unitPrice | vatAdded:18 | currency}}</td><!--Currency para birimi olarak gösteriyor-->
             <td>{{product.unitsInStock}}</td>
+            <td><button type="button" class="btn btn-outline-primary" (click)="addToCart(product)">Sepete Ekle</button></td>
         </tr>
     </tbody>
 
